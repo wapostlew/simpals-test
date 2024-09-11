@@ -15,6 +15,7 @@ elasticsearch = {extras = ["async"], version = "^8.15.1"}
 fastapi = "^0.114.1"
 uvicorn = {extras = ["standard"], version = "^0.30.6"}
 strawberry-graphql = "^0.240.0"
+pydantic-settings = "^2.5.2"
 
 
 [build-system]
