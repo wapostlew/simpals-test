@@ -1,0 +1,45 @@
+syntax = "proto3";
+package advertisement;
+
+service AdvertisementService {
+    rpc Store (Advertisement) returns (StoreResponse) {};
+    rpc Records (RecordsRequest) returns (stream Advertisement) {};
+    rpc Search (SearchRequest) returns (stream Advertisement) {};
+    rpc Aggregate (AggregateRequest) returns (AggregateResponse) {};
+}
+
+
+message Category {
+    string subcategory = 1;
+}
+
+message Title {
+    string ro = 1;
+    string ru = 2;
+}
+
+message Advertisement {
+    string _id = 1;
+    Category categories = 2;
+    Title title = 3;
+    string type = 4;
+    double posted = 5;
+}
+
+message StoreRequest {}
+message StoreResponse {
+    string result = 1;
+}
+
+message RecordsRequest {}
+message RecordsResponse {}
+
+message SearchRequest {
+    string title = 1;
+}
+message SearchResponse {}
+
+message AggregateRequest {}
+message AggregateResponse {
+    map<string, int32> aggregated = 1;
+}
