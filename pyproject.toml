@@ -7,6 +7,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+grpcio-tools = "^1.66.1"
+protobuf = "^5.28.0"
+pydantic = "^2.9.1"
+grpcio = "^1.66.1"
+elasticsearch = {extras = ["async"], version = "^8.15.1"}
+fastapi = "^0.114.1"
+uvicorn = {extras = ["standard"], version = "^0.30.6"}
+strawberry-graphql = "^0.240.0"
 
 
 [build-system]
