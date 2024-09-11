@@ -10,3 +10,11 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
       - "9200:9200"
+
+  grpc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "-m", "app.servers.grpc"]
+    env_file:
+      - ".env"
