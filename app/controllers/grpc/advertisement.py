@@ -1,4 +1,3 @@
-import asyncio
 from elasticsearch import AsyncElasticsearch
 from app.configs import grpc
 from app.generated import advertisement_pb2, advertisement_pb2_grpc
