@@ -1,4 +1,3 @@
-import os
 from elasticsearch import AsyncElasticsearch
 from app.generated import advertisement_pb2, advertisement_pb2_grpc
 from app.schemas import advertisement as ad_schema
@@ -8,16 +7,16 @@ from app.utils.convertor import GrpcMessageConvertor
 
 
 class AdvertisementServicer(advertisement_pb2_grpc.AdvertisementServiceServicer):
-    def __init__(self):
+    def __init__(self, es_url):
         self.convertor = GrpcMessageConvertor()
         self.manager = AdvertisementManager(
             AsyncElasticsearch(
-                hosts=os.getenv("GRPC_DB_ELASTICSEARCH_URL", "http://localhost:9200"),
+                hosts=es_url,
             )
         )
 
         initialize_mappings(
-            os.getenv("GRPC_DB_ELASTICSEARCH_URL", "http://localhost:9200"),
+            es_url,
             self.manager.index_name,
             self.manager.mapping(),
         )
