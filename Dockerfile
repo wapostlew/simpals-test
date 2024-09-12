@@ -13,3 +13,5 @@ COPY . .
 
 RUN poetry config virtualenvs.create false \
     && poetry install --no-dev --no-root
+
+EXPOSE ${EXPOSE_PORT}

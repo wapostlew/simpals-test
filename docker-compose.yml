@@ -16,5 +16,9 @@ services:
       context: .
       dockerfile: Dockerfile
     command: ["python", "-m", "app.servers.grpc"]
-    env_file:
-      - ".env"
+    ports:
+      - "${GRPC_PORT}:${GRPC_PORT}"
+    environment:
+      - "EXPOSE_PORT=${GRPC_PORT}"
+    depends_on:
+      - elasticsearch

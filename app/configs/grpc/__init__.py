@@ -10,6 +10,7 @@ class GrpcSettings(BaseSettings):
         env_nested_delimiter="_",
         env_file_encoding="utf-8",
         case_sensitive=False,
+        extra="allow",
     )
     host: str = "[::]"
     port: int = 50051
