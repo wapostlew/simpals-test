@@ -29,4 +29,4 @@ class SearchRequest(BaseModel):
 
 
 class AggregateResponse(BaseModel):
-    aggregated: dict[str, int]
+    aggregated: dict[str, int] = {}

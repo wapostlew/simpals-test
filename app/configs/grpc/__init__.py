@@ -14,4 +14,4 @@ class GrpcSettings(BaseSettings):
     )
     host: str = "[::]"
     port: int = 50051
-    db: DatabaseSettings
+    db: DatabaseSettings = DatabaseSettings()

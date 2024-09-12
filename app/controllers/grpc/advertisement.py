@@ -3,7 +3,7 @@ from app.configs import grpc
 from app.generated import advertisement_pb2, advertisement_pb2_grpc
 from app.schemas import advertisement as ad_schema
 from app.managers.advertisement import AdvertisementManager
-from app.helpers.checker import initialize_mappings
+from app.utils.checker import initialize_mappings
 from app.utils.convertor import GrpcMessageConvertor
 
 
@@ -12,12 +12,12 @@ class AdvertisementServicer(advertisement_pb2_grpc.AdvertisementServiceServicer)
         self.convertor = GrpcMessageConvertor()
         self.manager = AdvertisementManager(
             AsyncElasticsearch(
-                hosts=grpc.db.elasticsearch.unicode_string(),
+                hosts=grpc.db.elasticsearch,
             )
         )
 
         initialize_mappings(
-            grpc.db.elasticsearch.unicode_string(),
+            grpc.db.elasticsearch,
             self.manager.index_name,
             self.manager.mapping(),
         )

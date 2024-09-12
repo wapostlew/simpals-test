@@ -3,22 +3,22 @@ version: "3,7"
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
+    container_name: "elastic"
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ports:
-      - "9200:9200"
 
   grpc:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: "grpc-service"
     command: ["python", "-m", "app.servers.grpc"]
     ports:
-      - "${GRPC_PORT}:${GRPC_PORT}"
+      - 51500:51500
     environment:
-      - "EXPOSE_PORT=${GRPC_PORT}"
+      - GRPC_PORT=51500
     depends_on:
       - elasticsearch

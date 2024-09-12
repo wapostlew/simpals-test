@@ -1,6 +1,6 @@
-from pydantic import HttpUrl, AnyHttpUrl
+from pydantic import HttpUrl, AnyHttpUrl, PostgresDsn
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class DatabaseSettings(BaseSettings):
-    elasticsearch: AnyHttpUrl
+    elasticsearch: str = "http://elastic:9200"
