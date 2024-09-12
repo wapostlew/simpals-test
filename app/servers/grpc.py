@@ -1,7 +1,7 @@
+import os
 import concurrent.futures
 import grpc
 import logging
-from app import configs
 from app.generated import advertisement_pb2_grpc
 from app.controllers.grpc import advertisement
 
@@ -14,12 +14,12 @@ async def serve():
     advertisement_pb2_grpc.add_AdvertisementServiceServicer_to_server(
         advertisement.AdvertisementServicer(), server
     )
-
-    server.add_insecure_port(f"{configs.grpc.host}:{configs.grpc.port}")
-    logging.info(
-        f"Server started, listening on {configs.grpc.host}:{configs.grpc.port}"
+    host, port = os.getenv("SERVICE_GRPC_HOST", "[::]"), int(
+        os.getenv("SERVICE_GRPC_PORT", 50050)
     )
-    print(f"Server started, listening on {configs.grpc.host}:{configs.grpc.port}")
+    server.add_insecure_port(f"{host}:{port}")
+    logging.info(f"Server started, listening on {host}:{port}")
+    print(f"Server started, listening on {host}:{port}")
     await server.start()
 
     try:

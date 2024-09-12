@@ -1,13 +1,17 @@
-from typing import AsyncGenerator
+import os
 import grpc
-from app import configs
+from typing import AsyncGenerator
 from app.generated import advertisement_pb2, advertisement_pb2_grpc
 from app.schemas import advertisement as ad_schema
 from app.utils.convertor import GrpcMessageConvertor
 
 
 class AdvertisementClient:
-    def __init__(self, host: str = "localhost", port: int = configs.grpc.port):
+    def __init__(
+        self,
+        host: str = os.getenv("GRPC_CLIENT_ADS_HOST", "localhost"),
+        port: int = int(os.getenv("GRPC_CLIENT_ADS_PORT", 50050)),
+    ):
         self.channel = grpc.aio.insecure_channel(f"{host}:{port}")
         self.stub = advertisement_pb2_grpc.AdvertisementServiceStub(self.channel)
         self.convertor = GrpcMessageConvertor()

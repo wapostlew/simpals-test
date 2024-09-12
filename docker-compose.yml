@@ -16,9 +16,26 @@ services:
       dockerfile: Dockerfile
     container_name: "grpc-service"
     command: ["python", "-m", "app.servers.grpc"]
-    ports:
-      - 51500:51500
     environment:
-      - GRPC_PORT=51500
+      - SERVICE_GRPC_DB_ELASTICSEARCH_URL="http://localhost:9200"
+      - SERVICE_GRPC_HOST="[::]"
+      - SERVICE_GRPC_PORT=51600
     depends_on:
       - elasticsearch
+
+  graphql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: "graphql-service"
+    command: ["python", "-m", "app.servers.graphql"]
+    ports:
+      - 8000:8000
+    environment:
+      - "EXPOSE_PORT=8000"
+      - SERVICE_GRAPHQL_HOST="0.0.0.0"
+      - SERVICE_GRAPHQL_PORT=8000
+      - GRPC_CLIENT_ADS_HOST=grpc-service
+      - GRPC_CLIENT_ADS_PORT=51600
+    depends_on:
+      - grpc

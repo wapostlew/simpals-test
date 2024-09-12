@@ -1,9 +1,9 @@
+import os
 import strawberry
 from app.clients.advertisement import AdvertisementClient
 from app.types import advertisement as ad_types
 from app.inputs import advertisement as ad_inputs
 from app.schemas import advertisement as ad_schemas
-from app.configs import graphql as gql_config
 
 
 @strawberry.type
@@ -13,8 +13,8 @@ class Mutation:
         self, input_: ad_inputs.AdvertisementInput
     ) -> ad_types.StoreResponseType:
         advertisement_grpc_client = AdvertisementClient(
-            host=gql_config.clients.grpc.avertisement.host,
-            port=gql_config.clients.grpc.avertisement.port,
+            host=os.getenv("GRPC_CLIENT_ADS_HOST", "localhost"),
+            port=int(os.getenv("GRPC_CLIENT_ADS_PORT", 50050)),
         )
         response = await advertisement_grpc_client.store(
             data=ad_schemas.Advertisement(
