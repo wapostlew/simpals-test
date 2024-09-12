@@ -10,7 +10,7 @@ from app.utils.convertor import GrpcMessageConvertor
 class AdvertisementServicer(advertisement_pb2_grpc.AdvertisementServiceServicer):
     def __init__(self):
         self.convertor = GrpcMessageConvertor()
-        self.mannager = AdvertisementManager(
+        self.manager = AdvertisementManager(
             AsyncElasticsearch(
                 hosts=grpc.db.elasticsearch.unicode_string(),
             )
@@ -18,12 +18,12 @@ class AdvertisementServicer(advertisement_pb2_grpc.AdvertisementServiceServicer)
 
         initialize_mappings(
             grpc.db.elasticsearch.unicode_string(),
-            self.mannager.index_name,
-            self.mannager.mapping(),
+            self.manager.index_name,
+            self.manager.mapping(),
         )
 
     async def Store(self, request, context):
-        result = await self.mannager.store(
+        result = await self.manager.store(
             data=self.convertor.rpc_to_pydantic(
                 model=ad_schema.Advertisement,
                 message=request,
@@ -35,14 +35,14 @@ class AdvertisementServicer(advertisement_pb2_grpc.AdvertisementServiceServicer)
         )
 
     async def Records(self, request, context):
-        async for item in self.mannager.records():
+        async for item in self.manager.records():
             yield self.convertor.pydantic_to_rpc(
                 data=item,
                 schema=advertisement_pb2.Advertisement(),
             )
 
     async def Search(self, request, context):
-        async for item in self.mannager.search(
+        async for item in self.manager.search(
             query=self.convertor.rpc_to_pydantic(
                 model=ad_schema.SearchRequest,
                 message=request,
@@ -54,7 +54,8 @@ class AdvertisementServicer(advertisement_pb2_grpc.AdvertisementServiceServicer)
             )
 
     async def Aggregate(self, request, context):
-        result = await self.mannager.aggregate()
+        result = await self.manager.aggregate()
+
         return self.convertor.pydantic_to_rpc(
             data=result,
             schema=advertisement_pb2.AggregateResponse(),
